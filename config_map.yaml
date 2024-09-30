@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dbconfig
+  namespace: default
+data:
+    database_url: "mysql://mysqluser:mysqlpassword@mysqlhost:3306"
+    database_name: "mydatabase"
+    database_password: "mysqlpassword"
