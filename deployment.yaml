@@ -3,12 +3,6 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 2
   selector:
     matchLabels:
       app: nginx
@@ -20,20 +14,12 @@ spec:
       containers:
       - name: nginx
         image: nginx:1.12
-        env:
-          - name: ORDER
-            value: "Exterminatus"
-        envFrom:
-          - configMapRef:
-              name: dbconfig
-          - secretRef:
-              name: order
-        resources:
-            requests:
-              memory: 128Mi
-              cpu: 250m
-            limits:
-              memory: 256Mi
-              cpu: 500m
+        volumeMounts:
+          - name: config
+            mountPath: /etc/nginx/conf.d/
         ports:
         - containerPort: 80
+      volumes:
+        - name: config
+          configMap:
+            name: nginx-config

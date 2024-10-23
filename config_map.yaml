@@ -1,9 +1,17 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: dbconfig
+  name: nginx-config
   namespace: default
 data:
-    database_url: "mysql://mysqluser:mysqlpassword@mysqlhost:3306"
-    database_name: "mydatabase"
-    database_password: "mysqlpassword"
+  default.conf: |
+    server {
+        listen 80 default_server;
+        server_name _;
+    
+        default_type text/plain;
+
+        location / {
+            return 200 '$hostname\n';
+        }
+    }
